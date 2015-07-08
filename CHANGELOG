@@ -1,0 +1,16 @@
+--------- Version 1.3.0.0 -----------
+* Agregado servicio info_cuil que devuelve true en caso que el cliente exista o false en caso contrario
+* Scripts de configuracion de ambiente y ejecucion
+* Modifico contante Log_properties
+* Agrego servicios.sh para ejecutarse como deamon
+* Agrego en constantes el path de logging
+* Mejoro servicios.sh y run.sh con el nohup, --noreload y el &
+
+
+
+15/07/14 --------- Version 1.2.0.0 -----------
+* Version base del autenticador
+* Incluye hasta el servicio de recuperacion de password
+
+29/04/15 --------- Version 1.6.0.0 -----------
+*Se agrega a la version anterior la autorización por medio de permisos
