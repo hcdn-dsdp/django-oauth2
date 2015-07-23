@@ -99,7 +99,7 @@ sudo mv django-oauth2/environments/$ENVIRONMENT/settings.py django-oauth2/oauth_
 sudo mv django-oauth2/environments/$ENVIRONMENT/oauth2.sh $ENVIRONMENT_PATH/oauth2.sh
 
 #Setear environment
-sudo django-oauth2/setenv.sh
+django-oauth2/setenv.sh
 
 #remove environment folder
 sudo rm -rf django-oauth2/environments
