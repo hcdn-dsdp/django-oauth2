@@ -48,15 +48,7 @@ HOST=$4
 PORT=$5
 
 #Set usuario
-if [ "$1" = "prod" ]; then
-  USER=oauth-prod
-elif [ "$1" = "desa" ]; then
-  USER=oauth
-else
-  USER=gopromolla
-fi
-  
-echo "El usuario es  $USER"
+USER=`whoami`
 
 #Crear ambiente si no existe
 if [ ! -d "$ENVIRONMENT_PATH" ]; then
@@ -97,6 +89,9 @@ sudo touch `date +\%Y-\%m-\%d`.sql
 sudo chown $USER `date +\%Y-\%m-\%d`.sql
 sudo pg_dump -U$USER oauth2 > `date +\%Y-\%m-\%d`.sql
 
+#Volver al environment path
+cd ..
+
 #Move files by environment (desa, prod, local)
 sudo mv django-oauth2/environments/$ENVIRONMENT/run.sh django-oauth2/run.sh
 sudo mv django-oauth2/environments/$ENVIRONMENT/setenv.sh django-oauth2/setenv.sh
@@ -110,7 +105,7 @@ sudo django-oauth2/setenv.sh
 sudo rm -rf django-oauth2/environments
 
 #Editar servicios.sh con VERSION nueva
-sudo sed -i '9s/.*/    nohup python \/opt\/oauth2\/'$RELEASE_NUEVA'\/django-oauth2\/manage.py \\/' $ENVIRONMENT_PATH/oauth2.sh
+sudo sed -i '10s/.*/    nohup python \/opt\/oauth2\/'$RELEASE_NUEVA'\/django-oauth2\/manage.py \\/' $ENVIRONMENT_PATH/oauth2.sh
 
 #Dar permisos de ejecución luego de modificar
 sudo chmod +x $ENVIRONMENT_PATH/oauth2.sh
@@ -121,8 +116,4 @@ sudo service cron restart
 echo -e "$green"
 echo "El script ha terminado de realizar el deploy en $1."
 echo -e "$wipe"
-
-
-
-
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 readonly LOG_PATH=/var/log/oauth2
-readonly USER=oauth-prod
+readonly USER=`whoami`
 
 if [ ! -d "$LOG_PATH" ]; then
 	sudo mkdir $LOG_PATH
