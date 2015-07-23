@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LOG_PATH=/var/log/oauth2
-LOG_FILE=oauth2_`date +%Y-%m-%d`.log
+LOG_FILE=oauth2_`date +%d_%m_%Y`.log
 
 pgrep -f 'localhost:9000' > /dev/null
 
