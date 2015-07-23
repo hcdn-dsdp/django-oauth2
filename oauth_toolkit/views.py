@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from oauth2_provider.models import AccessToken, Application
 from authenticators.authorizator import HasPermission, HasTokenPermission, HasInfoPermission, hand_unauthorized_exc
-from oauth_toolkit.utils.logger import Logger
 from oauth_toolkit import constants
 from django.conf import settings
 from django.core.mail import send_mail
@@ -14,13 +13,7 @@ from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import smart_str, smart_unicode
 from django.contrib.auth.models import User
-
-
-
- 
-
- 
-
+import logging
     
 class TokenValidatorView(APIView):
     """
@@ -31,7 +24,7 @@ class TokenValidatorView(APIView):
         Args: token. 
     """
     permission_classes = (HasPermission,)
-    
+    logger = logging.getLogger('oauth_toolkit')
     
     def get(self, request, *args, **kwargs):
         """
@@ -39,13 +32,13 @@ class TokenValidatorView(APIView):
         """
         
         if constants.TOKEN_KEY not in kwargs: 
-            Logger().d(constants.INVALID_TOKEN_ERROR)
+            logger.debug(constants.INVALID_TOKEN_ERROR)
             return self.response(False, constants.MISSING_TOKEN_CODE)
                
         try:
             ts = AccessToken.objects.get(token=kwargs[constants.TOKEN_KEY])
             
-            Logger().d(constants.TOKEN_INFO.format(smart_str(ts), smart_str(ts.user.get_full_name()), smart_str(ts.user.email)))
+            logger.debug(constants.TOKEN_INFO.format(smart_str(ts), smart_str(ts.user.get_full_name()), smart_str(ts.user.email)))
         
             return self.response(False, constants.EXPIRED_TOKEN_CODE) if ts.is_expired() else self.response(True, constants.OK_CODE)
             
@@ -57,7 +50,7 @@ class TokenValidatorView(APIView):
     
     def response(self, bool_r, _status):
         
-        Logger().d(constants.STATUS_CODE_LOG.format(str(_status))) 
+        logger.debug(constants.STATUS_CODE_LOG.format(str(_status))) 
         #print constants.STATUS_CODE_LOG.format(str(_status))  
         return Response(data={constants.IS_VALID_KEY_CONST: bool_r} ,status=_status)
 
@@ -74,7 +67,8 @@ class PasswordManagerView(APIView):
         Args: token. 
     """
     permission_classes = (HasTokenPermission,)
-    
+    logger = logging.getLogger('oauth_toolkit')
+
     def put(self, request, *args, **kwargs):
         """
         Provee informacion
@@ -87,9 +81,9 @@ class PasswordManagerView(APIView):
             user = AccessToken.objects.get(token=_token).user
             user.set_password(_new_pass)
             user.save()
-            Logger().d(constants.PASSWORD_CHANGED.format(smart_str(_token), smart_str(user.get_full_name()), smart_str(user.email)))
+            logger.debug(constants.PASSWORD_CHANGED.format(smart_str(_token), smart_str(user.get_full_name()), smart_str(user.email)))
         except:
-            Logger().d(constants.PASSWORD_CHANGE_ERROR.format(smart_str(_token)))
+            logger.debug(constants.PASSWORD_CHANGE_ERROR.format(smart_str(_token)))
             return Response({constants.IS_VALID_KEY_CONST: False}, status=constants.DB_CHANGE_PASS_EXCEPTION_CODE)
         
         return Response({constants.IS_VALID_KEY_CONST: True}, status=constants.OK_CODE)
@@ -105,14 +99,15 @@ class PassRecoveryView(APIView):
         Args: cuil identificador del usuario. 
     """
     permission_classes = (HasPermission,) 
-    
+    logger = logging.getLogger('oauth_toolkit')
+
     def get(self, request, *args, **kwargs):
         
         """
         Provee informacion
         """
         if constants.EMAIL_KEY not in kwargs or constants.CUIL_KEY not in kwargs: 
-            Logger().d(constants.NO_CUIL_OR_EMAIL_ERROR)
+            logger.debug(constants.NO_CUIL_OR_EMAIL_ERROR)
             return Response(data=constants.INFO_NO_CUIL_OR_EMAIL_ERROR, status=constants.MISSING_EMIAL_OR_CUIL)
         
         cuil = kwargs[constants.CUIL_KEY]
@@ -129,7 +124,7 @@ class PassRecoveryView(APIView):
                 # user.get_username(), user.first_name, user.last_name, user.email, mailconstants.EMAIL_KEY: user.email,
                 #\nCUIL:{0} \nNombre:{1} \nApellido: {2} \nEmail-bd:{3} \nEmail-nuevo:{4}"
                 # self.send_email(settings.EMAIL_RECOVERY_RESPONSIBLE, __token)
-                Logger().d(constants.INFO_MAIL_INCONSISTENT)
+                logger.debug(constants.INFO_MAIL_INCONSISTENT)
                 
                 sent = send_mail(settings.EMAIL_SUBJECT, settings.EMAIL_MESSAGE_EXCEPTION.format(smart_str(user.get_username()), smart_str(user.first_name), smart_str(user.last_name), smart_str(user.email), smart_str(mail)), settings.EMAIL_HOST_USER, [settings.EMAIL_RECOVERY_RESPONSIBLE], fail_silently=False)
            
@@ -143,10 +138,10 @@ class PassRecoveryView(APIView):
             sent = send_mail(settings.EMAIL_SUBJECT, settings.EMAIL_MESSAGE.format(str(__token)), settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
         
         except ObjectDoesNotExist as ex:
-            Logger().d(constants.DB_RECOVERY_EXCEPTION_CUIL + str(ex))
+            logger.debug(constants.DB_RECOVERY_EXCEPTION_CUIL + str(ex))
             return Response(data=constants.DB_RECOVERY_EXCEPTION_CUIL, status=constants.DB_RECOVERY_EXCEPTION_CODE)
         except Exception as e:
-            Logger().d(constants.DB_RECOVERY_EXCEPTION + str(e))
+            logger.debug(constants.DB_RECOVERY_EXCEPTION + str(e))
             return Response(data=constants.DB_RECOVERY_EXCEPTION, status=constants.DB_RECOVERY)
 
         if sent == 1:
@@ -167,9 +162,7 @@ class PassRecoveryView(APIView):
     def handle_exception(self, exc):
         super(PassRecoveryView, self).handle_exception(exc)
         
-        
-        
-        
+          
         
 class UserManagerView(APIView):
     """
@@ -178,7 +171,7 @@ class UserManagerView(APIView):
         Args: cuil identificador del usuario. 
     """
     permission_classes = (HasInfoPermission,)
-    
+    logger = logging.getLogger('oauth_toolkit')    
     
     #Validated by HasInfoPermission
     def getToken(self, request):
@@ -194,7 +187,7 @@ class UserManagerView(APIView):
         try:
             ts = AccessToken.objects.get(token=_token)
             user = User.objects.get(username=ts.user)
-            Logger().d(constants.TOKEN_INFO.format(ts, smart_str(user.get_full_name()), smart_str(user.email)))
+            logger.debug(constants.TOKEN_INFO.format(ts, smart_str(user.get_full_name()), smart_str(user.email)))
             return self.response(user)
             
         except Exception as e:
@@ -216,7 +209,7 @@ class UserManagerView(APIView):
                          constants.ESTRUCTURA: user.perfildeusuario.estructura_real,
                          constants.DEPARTAMENTO: user.perfildeusuario.departamento}
                 _status=constants.OK_CODE
-                Logger().d(constants.INFO_RESPONSE_OK)
+                logger.debug(constants.INFO_RESPONSE_OK)
             except Exception:
                 _data = {constants.NAME_KEY: user.first_name,
                          constants.LAST_NAME_KEY: user.last_name,
@@ -228,11 +221,11 @@ class UserManagerView(APIView):
                          constants.ESTRUCTURA: None,
                          constants.DEPARTAMENTO: None}
                 _status=constants.OK_SIN_FUNCION
-                Logger().d(constants.INFO_RESPONSE_NO_FUNCTION)
+                logger.debug(constants.INFO_RESPONSE_NO_FUNCTION)
             
             return Response(data=_data, status=_status)
                 
-        Logger().d(constants.INFO_RESPONSE_ERROR)
+        logger.debug(constants.INFO_RESPONSE_ERROR)
         
         return Response(status=constants.DB_TOKEN_EXCEPTION_CODE)
     
@@ -248,14 +241,15 @@ class CuilView(APIView):
         Args: cuil identificador del usuario. 
     """
     permission_classes = (HasPermission,) 
-    
+    logger = logging.getLogger('oauth_toolkit')
+
     def get(self, request, *args, **kwargs):
         
         """
         Provee informacion de si el cuil existe o no
         """
         if constants.CUIL_KEY not in kwargs: 
-            Logger().d(constants.NO_CUIL_ERROR)
+            logger.debug(constants.NO_CUIL_ERROR)
             return Response(data=constants.INFO_NO_CUIL, status=constants.MISSING_CUIL)
         
         cuil = kwargs[constants.CUIL_KEY]
@@ -264,7 +258,7 @@ class CuilView(APIView):
         except ObjectDoesNotExist:
             return Response(data={constants.IS_VALID_KEY_CONST: False}, status=constants.OK_CODE)
         except Exception as e:
-            Logger().d(constants.DB_CUIL_INFO_EXCEPTION + str(e))
+            logger.debug(constants.DB_CUIL_INFO_EXCEPTION + str(e))
             return Response(data=constants.DB_CUIL_INFO_EXCEPTION, status=constants.DB_CUIL_EXCEPTION_CODE)
         
         
@@ -300,11 +294,12 @@ class HasPermissionView(APIView):
                     oauth2_provider.spd_expedientes_servicios-java_get
     """
     permission_classes = (HasPermission,) 
-    
+    logger = logging.getLogger('oauth_toolkit')
+
     def get(self, request, *args, **kwargs):
         
         if constants.SERVICE_KEY not in kwargs or constants.METHOD_TYPE_KEY not in kwargs or constants.TOKEN_KEY not in kwargs: 
-            Logger().d(constants.INVALID_ARGS)
+            logger.debug(constants.INVALID_ARGS)
             return Response(data=constants.INVALID_ARGS, status=constants.INVALID_ARGS_REQ)
         
         _service = kwargs[constants.SERVICE_KEY]
@@ -317,10 +312,10 @@ class HasPermissionView(APIView):
         try:
             _tk = AccessToken.objects.get(token=_token_n)
         except ObjectDoesNotExist:
-            Logger().d(constants.TOKEN_DOES_NOT_EXIST)
+            logger.debug(constants.TOKEN_DOES_NOT_EXIST)
             return Response(status=constants.DB_TOKEN_DOES_NOT_EXISTE_CODE, data=constants.TOKEN_DOES_NOT_EXIST)
         except Exception as e:
-            Logger().d(str(e))
+            logger.debug(str(e))
             return Response(status=constants.DB_TOKEN_ERROR_CODE, data=constants.TOKEN_ERROR)
         
         _app_name = _tk.application

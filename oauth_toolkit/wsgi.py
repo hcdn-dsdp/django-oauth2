@@ -10,5 +10,11 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "oauth_toolkit.settings")
 
+import logging
+logger = logging.getLogger('oauth_toolkit')
+logger.info('*** Starting OAuth2 Server ***')
+
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+
+

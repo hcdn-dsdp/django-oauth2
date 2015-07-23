@@ -47,6 +47,17 @@ RELEASE_NUEVA=release_$3
 HOST=$4
 PORT=$5
 
+#Set usuario
+if [ "$1" = "prod" ]; then
+  USER=oauth-prod
+elif [ "$1" = "desa" ]; then
+  USER=oauth
+else
+  USER=gopromolla
+fi
+  
+echo "El usuario es  $USER"
+
 #Crear ambiente si no existe
 if [ ! -d "$ENVIRONMENT_PATH" ]; then
     sudo mkdir $ENVIRONMENT_PATH
@@ -81,7 +92,10 @@ sudo rm -rf django-oauth2/.git
 
 #Make DB Dump
 sudo mkdir dbdump
-#COMPLETAR
+cd dbdump
+sudo touch `date +\%Y-\%m-\%d`.sql
+sudo chown $USER `date +\%Y-\%m-\%d`.sql
+sudo pg_dump -U$USER oauth2 > `date +\%Y-\%m-\%d`.sql
 
 #Move files by environment (desa, prod, local)
 sudo mv django-oauth2/environments/$ENVIRONMENT/run.sh django-oauth2/run.sh

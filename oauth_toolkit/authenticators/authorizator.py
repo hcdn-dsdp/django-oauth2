@@ -1,10 +1,10 @@
 from rest_framework.permissions import BasePermission
 from oauth2_provider.models import Application
 from oauth_toolkit import constants 
-from oauth_toolkit.utils.logger import Logger
 from oauth2_provider.models import AccessToken
 from oauth_toolkit.exceptions.authorizationErrors import NoPermissionException
 from rest_framework.response import Response
+import logging
 
 def validate_header_credentials(func):
 
@@ -12,18 +12,20 @@ def validate_header_credentials(func):
         """
         Allows access only to permitted users.
         """
+        logger = logging.getLogger('oauth_toolkit')
+        
         if constants.AUTH_HEADER_KEY_CONST not in request.META:
-            Logger().d(constants.AUTH_HEADER_KEY_ERROR)
+            logger.debug(constants.AUTH_HEADER_KEY_ERROR)
             raise NoPermissionException()  
 
         auth = request.META[constants.AUTH_HEADER_KEY_CONST]
         
         if auth.find(constants.CREDENTIALS_KEY_CONST) is -1:
-            Logger().d(constants.CREDENTIAL_KEY_ERROR)
+            logger.debug(constants.CREDENTIAL_KEY_ERROR)
             raise NoPermissionException()
         
         if len(auth.replace(constants.CREDENTIALS_KEY_CONST,"").split()) != constants.CANT_PARAM_CONST:
-            Logger().d(constants.CREDENTIAL_KEY_ERROR)
+            logger.debug(constants.CREDENTIAL_KEY_ERROR)
             raise NoPermissionException()
         
         return func(header, request, view)
@@ -32,7 +34,9 @@ def validate_header_credentials(func):
 
 
 class HasPermission(BasePermission):
-    
+
+    logger = logging.getLogger('oauth_toolkit')
+
     @validate_header_credentials    
     def has_permission(self, request, view):
         
@@ -42,13 +46,13 @@ class HasPermission(BasePermission):
             app = Application.objects.get(client_id=client_id)
             
             if app.client_secret != client_secret:
-                Logger().d(constants.SECRET_ERROR.format(str(client_secret), str(app.client_secret)))
+                logger.debug(constants.SECRET_ERROR.format(str(client_secret), str(app.client_secret)))
                 raise NoPermissionException()
         except:
-            Logger().d(constants.CLIENT_OR_SECRET_ERROR.format(str(client_id), str(client_secret)))
+            logger.debug(constants.CLIENT_OR_SECRET_ERROR.format(str(client_id), str(client_secret)))
             raise NoPermissionException()
         
-        Logger().d(constants.HAS_PERMISSION_GRANTED.format(str(client_id), str(client_secret), str(app.client_secret)))
+        logger.debug(constants.HAS_PERMISSION_GRANTED.format(str(client_id), str(client_secret), str(app.client_secret)))
         #raise NoPermissionException()
         return True 
     

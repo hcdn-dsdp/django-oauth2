@@ -1,7 +1,0 @@
-{
-    "filename":"messages.log",
-    "format":"%(asctime)s [%(levelname)s]: %(message)s",
-    "level":"debug",
-    "datefmt":"%m/%d/%Y %I:%M:%S",
-    "enable":"1"
-}

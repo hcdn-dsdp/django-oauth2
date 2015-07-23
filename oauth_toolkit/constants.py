@@ -6,14 +6,6 @@ PASS_CHANGED_KEY_CONST='pass_changed'
 STATUS_KEY_CONST='status'
 CANT_PARAM_CONST=2
 
-### Logger
-STATUS_CODE_LOG="Response_status_code={0}"
-LOGGING_FOLDER_EXC="No permission to log"
-LOGGING_FOLDER_EXC_MSG="\n \
-*******************************************************************************************\n \
-* ERROR - No permissions on Logging folder, or it does not exists. Should set environment.*\n \
-*******************************************************************************************\n"
-
 ####################### ROLL PERMISSION QUERY FORMAT
 ROLE_QUERY_CODENAME="{0}.{1}_{2}_{3}_{4}" 
 APP_CODENAME='Autenticador'
@@ -102,5 +94,3 @@ DB_RECOVERY=518
 DB_APP_EXCEPTION_CODE=519
 DB_TOKEN_DOES_NOT_EXISTE_CODE=520
 DB_TOKEN_ERROR_CODE=521
-#Logging
-LOG_PROPERTIES='/opt/release/release1.3.0.0/authenticator/oauth_toolkit/properties.json'
