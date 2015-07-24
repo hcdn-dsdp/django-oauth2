@@ -104,8 +104,10 @@ django-oauth2/setenv.sh
 #remove environment folder
 sudo rm -rf django-oauth2/environments
 
-#Editar servicios.sh con VERSION nueva
-sudo sed -i '10s/.*/    nohup python \/opt\/oauth2\/'$RELEASE_NUEVA'\/django-oauth2\/manage.py \\/' $ENVIRONMENT_PATH/oauth2.sh
+#Editar oauth2.sh con host, port y VERSION nueva
+sudo sed -i '5s/.*/HOST='$HOST'/' $ENVIRONMENT_PATH/oauth2.sh
+sudo sed -i '5s/.*/PORT='$PORT'/' $ENVIRONMENT_PATH/oauth2.sh
+sudo sed -i '12s/.*/    nohup python \/opt\/oauth2\/'$RELEASE_NUEVA'\/django-oauth2\/manage.py \\/' $ENVIRONMENT_PATH/oauth2.sh
 
 #Dar permisos de ejecución luego de modificar
 sudo chmod +x $ENVIRONMENT_PATH/oauth2.sh
