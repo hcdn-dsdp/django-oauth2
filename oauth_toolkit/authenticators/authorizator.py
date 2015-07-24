@@ -35,11 +35,10 @@ def validate_header_credentials(func):
 
 class HasPermission(BasePermission):
 
-    logger = logging.getLogger('oauth_toolkit')
-
     @validate_header_credentials    
     def has_permission(self, request, view):
         
+        logger = logging.getLogger('oauth_toolkit')
         client_id, client_secret = self.get_client_info(request)
         
         try:
