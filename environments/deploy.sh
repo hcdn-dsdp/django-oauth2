@@ -63,7 +63,7 @@ cd $ENVIRONMENT_PATH
 sudo service cron stop
 
 #Detener el sevidor de oauth2
-sudo pkill -f $HOST:$PORT
+sudo pkill -f 'django-oauth2/manage.py'
 
 #Mover version anterior a /releases
 if [ -d "$RELEASE_ACTUAL" ]; then
@@ -106,7 +106,7 @@ sudo rm -rf django-oauth2/environments
 
 #Editar oauth2.sh con host, port y VERSION nueva
 sudo sed -i '5s/.*/HOST='$HOST'/' $ENVIRONMENT_PATH/oauth2.sh
-sudo sed -i '5s/.*/PORT='$PORT'/' $ENVIRONMENT_PATH/oauth2.sh
+sudo sed -i '6s/.*/PORT='$PORT'/' $ENVIRONMENT_PATH/oauth2.sh
 sudo sed -i '12s/.*/    nohup python \/opt\/oauth2\/'$RELEASE_NUEVA'\/django-oauth2\/manage.py \\/' $ENVIRONMENT_PATH/oauth2.sh
 
 #Dar permisos de ejecución luego de modificar
