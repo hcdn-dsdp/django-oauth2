@@ -6,14 +6,14 @@ green='\E[1;32m'
 wipe="\033[1m\033[0m"
 
 usage="
-$(basename "$0") [-h] <ambiente> <version_actual> <version_nueva> <host> <port> -- script para hacer deploy del servidor de OAuth2.
+$(basename "$0") [-h] <ambiente> <version_actual> <version_nueva> <host> <port> -- script para hacer deploy del Servidor de OAuth2.
 
 where:
     -h                  muestra esta ayuda
     <ambiente>          {local, desa, prod}
     <version_actual>    versión que esta ejecutandose actualmente en el ambiente
     <version_nueva>     versión nueva que se ejecutará en el ambiente
-    <host>              ejemplo: api.hcdn.gob.ar
+    <host>              ejemplo: oauth2.hcdn.gob.ar
     <port>              ejemplo: 9000"
 
     while getopts ':hs:' option; do
