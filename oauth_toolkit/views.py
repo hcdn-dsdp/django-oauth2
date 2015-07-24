@@ -24,12 +24,12 @@ class TokenValidatorView(APIView):
         Args: token. 
     """
     permission_classes = (HasPermission,)
-    logger = logging.getLogger('oauth_toolkit')
     
     def get(self, request, *args, **kwargs):
         """
         Provee informacion
         """
+        logger = logging.getLogger('oauth_toolkit')
         
         if constants.TOKEN_KEY not in kwargs: 
             logger.debug(constants.INVALID_TOKEN_ERROR)
@@ -49,6 +49,7 @@ class TokenValidatorView(APIView):
     
     
     def response(self, bool_r, _status):
+        logger = logging.getLogger('oauth_toolkit')
         
         logger.debug(constants.STATUS_CODE_LOG.format(str(_status))) 
         #print constants.STATUS_CODE_LOG.format(str(_status))  
@@ -67,8 +68,7 @@ class PasswordManagerView(APIView):
         Args: token. 
     """
     permission_classes = (HasTokenPermission,)
-    logger = logging.getLogger('oauth_toolkit')
-
+    
     def put(self, request, *args, **kwargs):
         """
         Provee informacion
@@ -76,7 +76,7 @@ class PasswordManagerView(APIView):
         # next lines validated by HasTokenPermission
         _token = request.META[constants.AUTH_HEADER_KEY_CONST].replace(constants.BEARER_KEY, "")
         _new_pass = request.DATA[constants.PASSWORD_KEY]
-        
+        logger = logging.getLogger('oauth_toolkit')
         try:
             user = AccessToken.objects.get(token=_token).user
             user.set_password(_new_pass)
@@ -99,13 +99,14 @@ class PassRecoveryView(APIView):
         Args: cuil identificador del usuario. 
     """
     permission_classes = (HasPermission,) 
-    logger = logging.getLogger('oauth_toolkit')
-
-    def get(self, request, *args, **kwargs):
-        
+    
+    def get(self, request, *args, **kwargs):       
         """
         Provee informacion
         """
+        
+        logger = logging.getLogger('oauth_toolkit')
+        
         if constants.EMAIL_KEY not in kwargs or constants.CUIL_KEY not in kwargs: 
             logger.debug(constants.NO_CUIL_OR_EMAIL_ERROR)
             return Response(data=constants.INFO_NO_CUIL_OR_EMAIL_ERROR, status=constants.MISSING_EMIAL_OR_CUIL)
@@ -171,17 +172,17 @@ class UserManagerView(APIView):
         Args: cuil identificador del usuario. 
     """
     permission_classes = (HasInfoPermission,)
-    logger = logging.getLogger('oauth_toolkit')    
     
     #Validated by HasInfoPermission
     def getToken(self, request):
         return request.META[constants.AUTH_HEADER_KEY_CONST].replace(constants.BEARER_KEY, "")
 
     def get(self, request, *args, **kwargs):
-        
         """
         Provee informacion
         """
+        logger = logging.getLogger('oauth_toolkit')   
+        
         _token = self.getToken(request)
                        
         try:
@@ -197,6 +198,8 @@ class UserManagerView(APIView):
     
     def response(self, user=None):
         #print str(user)
+        logger = logging.getLogger('oauth_toolkit')   
+        
         if user is not None:
             try:
                 _data = {constants.NAME_KEY: user.first_name,
@@ -241,13 +244,13 @@ class CuilView(APIView):
         Args: cuil identificador del usuario. 
     """
     permission_classes = (HasPermission,) 
-    logger = logging.getLogger('oauth_toolkit')
-
+    
     def get(self, request, *args, **kwargs):
-        
         """
         Provee informacion de si el cuil existe o no
         """
+        logger = logging.getLogger('oauth_toolkit')
+        
         if constants.CUIL_KEY not in kwargs: 
             logger.debug(constants.NO_CUIL_ERROR)
             return Response(data=constants.INFO_NO_CUIL, status=constants.MISSING_CUIL)
@@ -294,9 +297,10 @@ class HasPermissionView(APIView):
                     oauth2_provider.spd_expedientes_servicios-java_get
     """
     permission_classes = (HasPermission,) 
-    logger = logging.getLogger('oauth_toolkit')
 
     def get(self, request, *args, **kwargs):
+        
+        logger = logging.getLogger('oauth_toolkit')
         
         if constants.SERVICE_KEY not in kwargs or constants.METHOD_TYPE_KEY not in kwargs or constants.TOKEN_KEY not in kwargs: 
             logger.debug(constants.INVALID_ARGS)

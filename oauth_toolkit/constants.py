@@ -15,7 +15,8 @@ IS_AUTHORIZED='is_authorized'
 
 #####################################################
 
-
+### Logger
+STATUS_CODE_LOG="Response_status_code={0}"
 
 ### PERMISSION ERRORS
 AUTH_HEADER_KEY_ERROR="Header invalido, vacio o inexistente"
