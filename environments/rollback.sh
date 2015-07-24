@@ -75,7 +75,7 @@ sudo rm -rf $RELEASE_ACTUAL
 sudo mv $RELEASES_PATH/$RELEASE_ANTERIOR $RELEASE_ANTERIOR
 
 #Editar oauth2.sh con VERSION nueva
-sudo sed -i '10s/.*/    nohup python \/opt\/oauth2\/'$RELEASE_ANTERIOR'\/django-oauth2\/oauth_toolkit\/manage.py \\/' oauth2.sh
+sudo sed -i '12s/.*/    nohup python \/opt\/oauth2\/'$RELEASE_ANTERIOR'\/django-oauth2\/oauth_toolkit\/manage.py \\/' oauth2.sh
 
 #Restart crontab
 sudo service cron restart
