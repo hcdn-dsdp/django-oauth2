@@ -83,6 +83,10 @@ sudo git clone https://github.com/DSDP/django-oauth2.git
 sudo rm -rf django-oauth2/.git
 
 #Make DB Dump
+echo -e "$green"
+echo "Creando dump de la base de datos. Ingresar el password de la DB postgres cuando lo solicite."
+echo -e "$wipe"
+
 sudo mkdir dbdump
 cd dbdump
 sudo touch `date +\%Y-\%m-\%d`.sql
