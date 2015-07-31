@@ -9,7 +9,7 @@ pgrep -f $HOST':'$PORT > /dev/null
 
 if [ $? -ne 0 ]; then
         echo $(date) " OAuth2 caido, levantando..." >> $LOG_PATH/$LOG_FILE
-        nohup python /opt/oauth2/release_0.0.0/django-oauth2/oauth_toolkit/manage.py \
+        nohup python /opt/oauth2/release_0.0.0/django-oauth2/manage.py \
         runsslserver --certificate /usr/share/ca-certificates/hcdn/srv-sparl-5.hcdn.gob.ar.crt \
         --key /usr/share/ca-certificates/hcdn/srv-sparl-5.hcdn.gob.ar.key \
         --addrport $HOST:$PORT \
