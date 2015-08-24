@@ -113,6 +113,12 @@ INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver 
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Modificar Comisiones SPD-SP', 12, 'spd_comisiones_put_servicios-parlamentarios');
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Eliminar Comisiones SPD-SP', 12, 'spd_comisiones_delete_servicios-parlamentarios');
 
+-- LEGISLADORES COMISIONES
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Crear Estructura de Comisiones SPD-SP', 12, 'spd_legisladores_comisiones_post_servicios-parlamentarios');
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver  Estructura de Comisiones SPD-SP', 12, 'spd_legisladores_comisiones_get_servicios-parlamentarios');
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Modificar  Estructura de Comisiones SPD-SP', 12, 'spd_legisladores_comisiones_put_servicios-parlamentarios');
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Eliminar  Estructura de Comisiones SPD-SP', 12, 'spd_legisladores_comisiones_delete_servicios-parlamentarios');
+
 -- DESPACHO
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Crear Despachos SPD-SP', 12, 'spd_despachos_post_servicios-parlamentarios');
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Despachos SPD-SP', 12, 'spd_despachos_get_servicios-parlamentarios');
@@ -264,6 +270,10 @@ INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver 
 
 -- COMISION
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Comisiones WEB-SP', 12, 'webHCDN_comisiones_get_servicios-parlamentarios');
+
+-- LEGISLADORES COMISIONES
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver  Estructura de Comisiones WEB-SP', 12, 'webHCDN_legisladores_comisiones_get_servicios-parlamentarios');
+
 
 -- DESPACHO
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Despachos WEB-SP', 12, 'webHCDN_despachos_get_servicios-parlamentarios');
