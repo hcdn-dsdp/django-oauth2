@@ -215,6 +215,13 @@ INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver 
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Modificar Sanciones SPD-SP', 12, 'spd_sanciones_put_servicios-parlamentarios');
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Eliminar Sanciones SPD-SP', 12, 'spd_sanciones_delete_servicios-parlamentarios');
 
+-- PERIODOS
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Crear Periodos SPD-SP', 12, 'spd_periodos_post_servicios-parlamentarios');
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Periodos SPD-SP', 12, 'spd_periodos_get_servicios-parlamentarios');
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Modificar Periodos SPD-SP', 12, 'spd_periodos_put_servicios-parlamentarios');
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Eliminar Periodos SPD-SP', 12, 'spd_periodos_delete_servicios-parlamentarios');
+
+
 
 -- Script WEB
 -- CARGOS
@@ -326,4 +333,5 @@ INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver 
 -- SANCION
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Sanciones WEB-SP', 12, 'webHCDN_sanciones_get_servicios-parlamentarios');
 
-
+-- PERIODOS
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Periodos WEB-SP', 12, 'webHCDN_periodos_get_servicios-parlamentarios');
