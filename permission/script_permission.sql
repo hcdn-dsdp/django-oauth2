@@ -335,3 +335,10 @@ INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver 
 
 -- PERIODOS
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Periodos WEB-SP', 12, 'webHCDN_periodos_get_servicios-parlamentarios');
+
+
+
+-- Script AUDIO Y VIDEO
+
+-- PROYECTO
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Proyectos Audio y Video', 12, 'ayvHCDN_proyectos_get_servicios-parlamentarios');
