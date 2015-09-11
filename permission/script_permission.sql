@@ -342,3 +342,7 @@ INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver 
 
 -- PROYECTO
 INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Proyectos Audio y Video', 12, 'ayvHCDN_proyectos_get_servicios-parlamentarios');
+
+-- ORDEN_DIA
+INSERT INTO auth_permission(name, content_type_id, codename) VALUES ('Puede Ver Ordenes del dia Audio y Video', 12, 'ayvHCDN_ordenesdeldia_get_servicios-parlamentarios');
+
