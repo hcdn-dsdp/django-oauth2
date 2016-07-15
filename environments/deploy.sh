@@ -77,7 +77,7 @@ sudo mkdir $RELEASE_NUEVA
 cd $ENVIRONMENT_PATH/$RELEASE_NUEVA
 
 #git clone del proyecto
-sudo git clone https://github.com/DSDP/django-oauth2.git
+sudo git clone https://github.com/hcdn-dsdp/django-oauth2.git
 
 #remove .git
 sudo rm -rf django-oauth2/.git
