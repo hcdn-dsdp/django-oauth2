@@ -60,6 +60,7 @@ MIDDLEWARE_CLASSES = (
 CORS_ORIGIN_WHITELIST = (
         'sparl-desa.hcdn.gob.ar',
         'sparl.local',
+        'sparl-local.hcdn.gob.ar',
         'sparlv2',
         '10.102.13.21', #maquina de maxi
         'hcdn.gob.ar',
